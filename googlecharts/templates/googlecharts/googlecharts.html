@@ -1,0 +1,43 @@
+<script type="text/javascript" src="//www.google.com/jsapi"></script>
+<script type="text/javascript">
+	(function() {
+		function _clone(obj) {
+			if (obj instanceof Array) {
+				var copy = [];
+				for (var i = 0; i < obj.length; ++i) {
+					copy[i] = _clone(obj[i]);
+				}
+				return copy;
+			}
+			else if (obj instanceof Object) {
+				var copy = {};
+				for (var i in obj) {
+					if (obj.hasOwnProperty(i)) {
+						copy[i] = _clone(obj[i]);
+					}
+				}
+				return copy;
+			}
+			return obj;
+		}
+		googlecharts = [];
+		var opt;
+		{{ googlecharts_js|safe }}
+	})();
+	function googlecharts_main() {
+		if (typeof googlecharts == "undefined") return;
+		for (var i = 0; i < googlecharts.length; ++i) {
+			var c = googlecharts[i];
+			var data = new google.visualization.DataTable();
+			for (var j = 0; j < c.columns.length; ++j) {
+				data.addColumn(c.columns[j].type, c.columns[j].label);
+			}
+			data.addRows(c.rows);
+			c.container = document.getElementById(c.container);
+			var chart = new google.visualization[c.kind](c.container);
+			chart.draw(data, c.options);
+		}
+	}
+	google.load("visualization", "{{ api }}", {packages: ["corechart"]});
+	google.setOnLoadCallback(googlecharts_main);
+</script>

@@ -1,0 +1,145 @@
+{% load googlecharts %}<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="utf-8">
+	<title>django-google-charts</title>
+	<link rel="stylesheet" type="text/css" href="/static/grid.css" media="all">
+	<style type="text/css">
+		h1, h2	{font: italic 2.5em/1em 'Georgia', serif}
+		h2	{font-size: 1.5em}
+		iframe	{vertical-align: bottom}
+		.normal	{height: 240px; width: 300px}
+		.wide	{height: 240px; width: 940px}
+		.graph	{background: #f9f9f9; margin-bottom: 20px}
+	</style>
+</head>
+<body>
+	<div class="container_12">
+		<div class="grid_12">
+			<h1>django-google-charts</h1>
+			<div id="series_count" class="wide graph"></div>
+		</div>
+		<div class="grid_4">
+			<h2>{{ series.count.0.0.0|date:"F" }}</h2>
+			<div id="series_count_0" class="normal graph"></div>
+		</div>
+		<div class="grid_4">
+			<h2>{{ series.count.1.0.0|date:"F" }}</h2>
+			<div id="series_count_1" class="normal graph"></div>
+		</div>
+		<div class="grid_4">
+			<h2>{{ series.count.2.0.0|date:"F" }}</h2>
+			<div id="series_count_2" class="normal graph"></div>
+		</div>
+		<div class="clear"></div>
+		<div class="grid_4">
+			<div id="series_total_0" class="normal graph"></div>
+		</div>
+		<div class="grid_4">
+			<div id="series_total_1" class="normal graph"></div>
+		</div>
+		<div class="grid_4">
+			<div id="series_total_2" class="normal graph"></div>
+		</div>
+		<div class="grid_12">
+			<h2>Paid amount (avg.)</h2>
+			<div id="series_total" class="wide graph"></div>
+		</div>
+	</div>
+	{% googlecharts %}
+		{% data "data_count_0" %}
+			{% for row in series.count.0 %}["{{ row.0|date:"M j" }}", {{ row.1 }}],{% endfor %}
+		{% enddata %}
+
+		{% data "data_count_1" %}
+			{% for row in series.count.1 %}["{{ row.0|date:"M j" }}", {{ row.1 }}],{% endfor %}
+		{% enddata %}
+
+		{% data "data_count_2" %}
+			{% for row in series.count.2 %}["{{ row.0|date:"M j" }}", {{ row.1 }}],{% endfor %}
+		{% enddata %}
+
+		{% data "data_count" %}
+			{% for row in series.count_3 %}["{{ row.0|date:"M j" }}", {{ row.1 }}],{% endfor %}
+		{% enddata %}
+
+		{% data "data_total_0" %}
+			{% for row in series.total.0 %}["{{ row.0|date:"M j" }}", {v: {{ row.1 }}, f: "${{ row.1|floatformat:2 }}"}],{% endfor %}
+		{% enddata %}
+
+		{% data "data_total_1" %}
+			{% for row in series.total.1 %}["{{ row.0|date:"M j" }}", {v: {{ row.1 }}, f: "${{ row.1|floatformat:2 }}"}],{% endfor %}
+		{% enddata %}
+
+		{% data "data_total_2" %}
+			{% for row in series.total.2 %}["{{ row.0|date:"M j" }}", {v: {{ row.1 }}, f: "${{ row.1|floatformat:2 }}"}],{% endfor %}
+		{% enddata %}
+
+		{% data "data_total" %}
+			{% for row in series.total_3 %}["{{ row.0|date:"M j" }}", {v: {{ row.1 }}, f: "${{ row.1|floatformat:2 }}"}],{% endfor %}
+		{% enddata %}
+
+		options = {
+			backgroundColor: "#f9f9f9",
+			colors: ["#09f"],
+			gridlineColor: "#ddd",
+			legend: "none",
+			vAxis: {minValue: 0},
+			chartArea: {left: 40, top: 20, width: 240, height: 180},
+			width: 300,
+			height: 240
+		};
+
+		options_wide = _clone(options);
+		options_wide.chartArea.width = 880;
+		options_wide.width = 940;
+
+		{% options "opt_count" %}
+			columns: [
+				{type: "string", label: "Date"},
+				{type: "number", label: "# of payments"}
+			],
+			kind: "LineChart",
+			options: options
+		{% endoptions %}
+
+		{% options "opt_count_wide" %}
+			columns: [
+				{type: "string", label: "Date"},
+				{type: "number", label: "# of payments"}
+			],
+			kind: "LineChart",
+			options: options_wide
+		{% endoptions %}
+
+		{% options "opt_total" %}
+			columns: [
+				{type: "string", label: "Date"},
+				{type: "number", label: "Paid amount"}
+			],
+			kind: "ColumnChart",
+			options: options
+		{% endoptions %}
+
+		{% options "opt_total_wide" %}
+			columns: [
+				{type: "string", label: "Date"},
+				{type: "number", label: "Paid amount (avg.)"}
+			],
+			kind: "ColumnChart",
+			options: options_wide
+		{% endoptions %}
+
+		{% graph "series_count" "data_count" "opt_count_wide" %}
+		{% graph "series_total" "data_total" "opt_total_wide" %}
+
+		{% graph "series_count_0" "data_count_0" "opt_count" %}
+		{% graph "series_count_1" "data_count_1" "opt_count" %}
+		{% graph "series_count_2" "data_count_2" "opt_count" %}
+
+		{% graph "series_total_0" "data_total_0" "opt_total" %}
+		{% graph "series_total_1" "data_total_1" "opt_total" %}
+		{% graph "series_total_2" "data_total_2" "opt_total" %}
+	{% endgooglecharts %}
+</body>
+</html>
