@@ -29,8 +29,8 @@
 		for (var i = 0; i < googlecharts.length; ++i) {
 			var c = googlecharts[i];
 			var data = new google.visualization.DataTable();
-			for (var j = 0; j < c.columns.length; ++j) {
-				data.addColumn(c.columns[j].type, c.columns[j].label);
+			for (var j = 0; j < c.rows._cl.length; ++j) {
+				data.addColumn.apply(data, c.rows._cl[j]);
 			}
 			data.addRows(c.rows);
 			c.container = document.getElementById(c.container);

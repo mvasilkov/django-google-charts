@@ -27,18 +27,13 @@ Google Visualization API version: `GOOGLECHARTS_API = '1.1'`, as documented
 	<div id="out"></div>
 	{% googlecharts %}
 		{# named data and options can be reused #}
-		{% data "out_data" %}
-			["foo", 32],
-			["bar", 64],
-			["baz", 96],
+		{% data values "out_data" %}
+			{% col "string" "Name" %}"{{ val }}"{% endcol %}
+			{% col "number" "Value" %}{{ val }}{% endcol %}
 		{% enddata %}
 		{# you can also use global javascript variables here, #}
 		{# and call functions #}
 		{% options "out_options" %}
-			columns: [
-				{type: "string", label: "Name"},
-				{type: "number", label: "Value"}
-			],
 			kind: "PieChart",
 			options: {
 				width: 300,
@@ -48,6 +43,10 @@ Google Visualization API version: `GOOGLECHARTS_API = '1.1'`, as documented
 		{# chart is assembled from container, data and options #}
 		{% graph "out" "out_data" "out_options" %}
 	{% endgooglecharts %}
+
+Given the context:
+
+	{'values': [['foo', 32], ['bar', 64], ['baz', 96]]}
 
 The end result looks like this:
 

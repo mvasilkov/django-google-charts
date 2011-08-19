@@ -47,36 +47,44 @@
 		</div>
 	</div>
 	{% googlecharts %}
-		{% data "data_count_0" %}
-			{% for row in series.count.0 %}["{{ row.0|date:"M j" }}", {{ row.1 }}],{% endfor %}
+		{% data series.count.0 "count_0" %}
+			{% col "string" "Date" %}"{{ val|date:"M j" }}"{% endcol %}
+			{% col "number" "# of payments" %}{{ val }}{% endcol %}
 		{% enddata %}
 
-		{% data "data_count_1" %}
-			{% for row in series.count.1 %}["{{ row.0|date:"M j" }}", {{ row.1 }}],{% endfor %}
+		{% data series.count.1 "count_1" %}
+			{% col "string" "Date" %}"{{ val|date:"M j" }}"{% endcol %}
+			{% col "number" "# of payments" %}{{ val }}{% endcol %}
 		{% enddata %}
 
-		{% data "data_count_2" %}
-			{% for row in series.count.2 %}["{{ row.0|date:"M j" }}", {{ row.1 }}],{% endfor %}
+		{% data series.count.2 "count_2" %}
+			{% col "string" "Date" %}"{{ val|date:"M j" }}"{% endcol %}
+			{% col "number" "# of payments" %}{{ val }}{% endcol %}
 		{% enddata %}
 
-		{% data "data_count" %}
-			{% for row in series.count_3 %}["{{ row.0|date:"M j" }}", {{ row.1 }}],{% endfor %}
+		{% data series.count_3 "count" %}
+			{% col "string" "Date" %}"{{ val|date:"M j" }}"{% endcol %}
+			{% col "number" "# of payments" %}{{ val }}{% endcol %}
 		{% enddata %}
 
-		{% data "data_total_0" %}
-			{% for row in series.total.0 %}["{{ row.0|date:"M j" }}", {v: {{ row.1 }}, f: "${{ row.1|floatformat:2 }}"}],{% endfor %}
+		{% data series.total.0 "total_0" %}
+			{% col "string" "Date" %}"{{ val|date:"M j" }}"{% endcol %}
+			{% col "number" "Paid amount" %}{v:{{ val }},f:"${{ val|floatformat:2 }}"}{% endcol %}
 		{% enddata %}
 
-		{% data "data_total_1" %}
-			{% for row in series.total.1 %}["{{ row.0|date:"M j" }}", {v: {{ row.1 }}, f: "${{ row.1|floatformat:2 }}"}],{% endfor %}
+		{% data series.total.1 "total_1" %}
+			{% col "string" "Date" %}"{{ val|date:"M j" }}"{% endcol %}
+			{% col "number" "Paid amount" %}{v:{{ val }},f:"${{ val|floatformat:2 }}"}{% endcol %}
 		{% enddata %}
 
-		{% data "data_total_2" %}
-			{% for row in series.total.2 %}["{{ row.0|date:"M j" }}", {v: {{ row.1 }}, f: "${{ row.1|floatformat:2 }}"}],{% endfor %}
+		{% data series.total.2 "total_2" %}
+			{% col "string" "Date" %}"{{ val|date:"M j" }}"{% endcol %}
+			{% col "number" "Paid amount" %}{v:{{ val }},f:"${{ val|floatformat:2 }}"}{% endcol %}
 		{% enddata %}
 
-		{% data "data_total" %}
-			{% for row in series.total_3 %}["{{ row.0|date:"M j" }}", {v: {{ row.1 }}, f: "${{ row.1|floatformat:2 }}"}],{% endfor %}
+		{% data series.total_3 "total" %}
+			{% col "string" "Date" %}"{{ val|date:"M j" }}"{% endcol %}
+			{% col "number" "Paid amount (avg.)" %}{v:{{ val }},f:"${{ val|floatformat:2 }}"}{% endcol %}
 		{% enddata %}
 
 		options = {
@@ -95,51 +103,35 @@
 		options_wide.width = 940;
 
 		{% options "opt_count" %}
-			columns: [
-				{type: "string", label: "Date"},
-				{type: "number", label: "# of payments"}
-			],
 			kind: "LineChart",
 			options: options
 		{% endoptions %}
 
 		{% options "opt_count_wide" %}
-			columns: [
-				{type: "string", label: "Date"},
-				{type: "number", label: "# of payments"}
-			],
 			kind: "LineChart",
 			options: options_wide
 		{% endoptions %}
 
 		{% options "opt_total" %}
-			columns: [
-				{type: "string", label: "Date"},
-				{type: "number", label: "Paid amount"}
-			],
 			kind: "ColumnChart",
 			options: options
 		{% endoptions %}
 
 		{% options "opt_total_wide" %}
-			columns: [
-				{type: "string", label: "Date"},
-				{type: "number", label: "Paid amount (avg.)"}
-			],
 			kind: "ColumnChart",
 			options: options_wide
 		{% endoptions %}
 
-		{% graph "series_count" "data_count" "opt_count_wide" %}
-		{% graph "series_total" "data_total" "opt_total_wide" %}
+		{% graph "series_count" "count" "opt_count_wide" %}
+		{% graph "series_total" "total" "opt_total_wide" %}
 
-		{% graph "series_count_0" "data_count_0" "opt_count" %}
-		{% graph "series_count_1" "data_count_1" "opt_count" %}
-		{% graph "series_count_2" "data_count_2" "opt_count" %}
+		{% graph "series_count_0" "count_0" "opt_count" %}
+		{% graph "series_count_1" "count_1" "opt_count" %}
+		{% graph "series_count_2" "count_2" "opt_count" %}
 
-		{% graph "series_total_0" "data_total_0" "opt_total" %}
-		{% graph "series_total_1" "data_total_1" "opt_total" %}
-		{% graph "series_total_2" "data_total_2" "opt_total" %}
+		{% graph "series_total_0" "total_0" "opt_total" %}
+		{% graph "series_total_1" "total_1" "opt_total" %}
+		{% graph "series_total_2" "total_2" "opt_total" %}
 	{% endgooglecharts %}
 </body>
 </html>
