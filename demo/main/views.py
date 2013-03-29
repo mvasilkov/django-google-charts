@@ -3,8 +3,12 @@ from dateutil.relativedelta import relativedelta
 from django.db.models import Sum, Avg
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from googlecharts import time_series
 from main.models import Payment
+from qsstats import QuerySetStats
+
+def time_series(queryset, date_field, interval, func=None):
+    qsstats = QuerySetStats(queryset, date_field, func)
+    return qsstats.time_series(*interval)
 
 def home(request):
     series = {'count': [], 'total': []}

@@ -1,0 +1,13 @@
+Development
+===========
+
+This module contains a demo app that you can run to test it.
+To run it do the following::
+
+  $ <path to your python>/virtualenv .
+  $ bin/pip install -r demo/requirements.txt
+  $ PYTHONPATH=. bin/python demo/manage.py syncdb
+  $ PYTHONPATH=. bin/python demo/manage.py populatedb
+  $ PYTHONPATH=. bin/python demo/manage.py runserver
+
+ 
